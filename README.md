@@ -29,3 +29,9 @@ click **New Blog Post**. Fill in the fields, write the post, and click
 Python's standard library, so there is nothing to install.
 
 Forms open the visitor's email app, addressed to general@k3professionalservices.com.
+
+## Hosting notes
+
+This repository is public on purpose: everything in it is already public on the
+live site, and Netlify's free plan builds public repositories for any
+contributor (it limits private ones to a single verified account).
