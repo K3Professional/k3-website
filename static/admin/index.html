@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>K3 Blog Editor</title>
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body>
+  <!-- Decap CMS: the blog editor. Posts are saved as files in the GitHub
+       repository, and Netlify rebuilds the site each time one is published. -->
+  <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+  <script>
+    // Show the preview pane in the site's own fonts and colors.
+    CMS.registerPreviewStyle("/css/style.css");
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+# Blog editor settings (Decap CMS). Open the editor at /admin.
+backend:
+  name: github
+  repo: K3Professional/k3-website
+  branch: main
+  commit_messages:
+    create: "Blog: add “{{slug}}”"
+    update: "Blog: update “{{slug}}”"
+    delete: "Blog: delete “{{slug}}”"
+    uploadMedia: "Blog: upload image {{path}}"
+    deleteMedia: "Blog: delete image {{path}}"
+
+site_url: https://k3professionalservices.com
+display_url: https://k3professionalservices.com
+logo_url: /images/k3-logo-256.webp
+
+# Images uploaded in the editor are saved here and published at /images/blog/...
+media_folder: static/images/blog
+public_folder: /images/blog
+
+collections:
+  - name: blog
+    label: Blog Posts
+    label_singular: Blog Post
+    description: "Write a post, click Publish, and it goes live on the K3 blog in about a minute."
+    folder: content/blog
+    create: true
+    extension: md
+    format: json-frontmatter
+    # The web address comes from the title, e.g. /blog/how-to-negotiate-salary
+    slug: "{{slug}}"
+    preview_path: "blog/{{slug}}"
+    summary: "{{title}} · {{date}}"
+    sortable_fields: ["date", "title", "category"]
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: "The headline. Becomes the page title and the web address."
+      - label: Search description
+        name: description
+        widget: string
+        hint: "Shown under the title in Google results. One or two sentences, 160 characters at most."
+        pattern: ['^.{20,160}$', "Keep this between 20 and 160 characters so Google shows all of it."]
+      - label: Card summary
+        name: excerpt
+        widget: text
+        hint: "The short summary shown on the blog page. Can be a little longer than the search description."
+      - label: Publish date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "MMMM D, YYYY"
+        time_format: false
+      - label: Category
+        name: category
+        widget: select
+        options: ["Career Development", "Resume Tips", "Interview Prep", "Job Search", "Industry Insights"]
+      - label: Cover image
+        name: image
+        widget: image
+        hint: "A wide image (landscape) works best. Under 500 KB keeps the page fast."
+      - label: Cover image description
+        name: image_alt
+        widget: string
+        hint: "Describe the image in a few words, for people using screen readers and for Google."
+      - label: Feature at the top of the blog page
+        name: featured
+        widget: boolean
+        default: false
+        required: false
+        hint: "Turn on for one post at a time. If none are featured, the newest post is shown first."
+      - label: Save as draft (don't publish yet)
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+        hint: "While this is on, the post is saved but does not appear on the website."
+      - label: Post
+        name: body
+        widget: markdown
+        hint: "Use the toolbar for headings, bold, lists, links and quotes."

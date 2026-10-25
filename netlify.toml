@@ -1,0 +1,4 @@
+# Netlify builds the site from this repository on every change.
+[build]
+  command = "python3 src/build.py"
+  publish = "site"

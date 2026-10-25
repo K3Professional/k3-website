@@ -1,0 +1,7 @@
+# Netlify redirects — keeps one address per page and catches old Hostinger links
+https://www.k3professionalservices.com/*  https://k3professionalservices.com/:splat  301!
+http://www.k3professionalservices.com/*   https://k3professionalservices.com/:splat  301!
+/index.html   /            301!
+/resumaire    https://www.resumaire.com   301
+/shop         /                           301
+/register     https://resumaire.com/pricing  301
