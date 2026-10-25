@@ -1,4 +1,11 @@
 # Blog editor settings (Decap CMS). Open the editor at /admin.
+#
+# Kept to four fields on purpose: Title, Category, Cover image, Post. The site
+# fills in everything else when it builds (src/build.py → read_post):
+#   - date: from the file name, which the editor starts with the day it was created
+#   - search description and blog-card summary: the post's first paragraph
+#   - image description: the title
+#   - featured: the newest post leads the blog page
 backend:
   name: github
   repo: K3Professional/k3-website
@@ -12,9 +19,10 @@ backend:
 
 site_url: https://k3professionalservices.com
 display_url: https://k3professionalservices.com
-logo_url: /images/k3-logo-256.webp
+logo:
+  src: /images/k3-logo-256.webp
+  show_in_header: true
 
-# Images uploaded in the editor are saved here and published at /images/blog/...
 media_folder: static/images/blog
 public_folder: /images/blog
 
@@ -22,61 +30,38 @@ collections:
   - name: blog
     label: Blog Posts
     label_singular: Blog Post
-    description: "Write a post, click Publish, and it goes live on the K3 blog in about a minute."
+    description: "Click “+ Blog Post”, fill in the four boxes, then click Publish → Publish now. It's live on the K3 blog in about a minute."
     folder: content/blog
     create: true
     extension: md
     format: json-frontmatter
-    # The web address comes from the title, e.g. /blog/how-to-negotiate-salary
-    slug: "{{slug}}"
-    preview_path: "blog/{{slug}}"
-    summary: "{{title}} · {{date}}"
-    sortable_fields: ["date", "title", "category"]
+    # File name = publish date + title. The site reads the date from it and
+    # uses only the title part in the web address: /blog/your-title
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}}"
+    sortable_fields: ["commit_date", "title"]
+    editor:
+      preview: false
     fields:
       - label: Title
         name: title
         widget: string
-        hint: "The headline. Becomes the page title and the web address."
-      - label: Search description
-        name: description
-        widget: string
-        hint: "Shown under the title in Google results. One or two sentences, 160 characters at most."
-        pattern: ['^.{20,160}$', "Keep this between 20 and 160 characters so Google shows all of it."]
-      - label: Card summary
-        name: excerpt
-        widget: text
-        hint: "The short summary shown on the blog page. Can be a little longer than the search description."
-      - label: Publish date
-        name: date
-        widget: datetime
-        format: "YYYY-MM-DD"
-        date_format: "MMMM D, YYYY"
-        time_format: false
+        hint: "Your headline. It also becomes the web address."
       - label: Category
         name: category
         widget: select
+        default: "Career Development"
         options: ["Career Development", "Resume Tips", "Interview Prep", "Job Search", "Industry Insights"]
       - label: Cover image
         name: image
         widget: image
-        hint: "A wide image (landscape) works best. Under 500 KB keeps the page fast."
-      - label: Cover image description
-        name: image_alt
-        widget: string
-        hint: "Describe the image in a few words, for people using screen readers and for Google."
-      - label: Feature at the top of the blog page
-        name: featured
-        widget: boolean
-        default: false
         required: false
-        hint: "Turn on for one post at a time. If none are featured, the newest post is shown first."
-      - label: Save as draft (don't publish yet)
-        name: draft
-        widget: boolean
-        default: false
-        required: false
-        hint: "While this is on, the post is saved but does not appear on the website."
+        choose_url: false
+        hint: "Optional. A wide (landscape) photo looks best. If you skip it, the blog banner image is used."
       - label: Post
         name: body
         widget: markdown
-        hint: "Use the toolbar for headings, bold, lists, links and quotes."
+        modes: ["rich_text"]
+        buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"]
+        editor_components: ["image"]
+        hint: "Your first paragraph becomes the summary people see in Google and on the blog page, so make it a good one."

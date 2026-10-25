@@ -271,6 +271,23 @@ CTA_DEFAULT = ("Prefer to talk it through with a person? "
                '<a href="{{ATS}}">free ATS resume check</a>.')
 
 
+def summary(markdown_text, limit):
+    """The first real paragraph of a post as plain text, cut at a word boundary."""
+    for block in re.split(r"\n\s*\n", markdown_text):
+        b = block.strip()
+        if not b or b[0] in "#>-*|!<" or re.match(r"^\d+[.)]\s", b):
+            continue
+        b = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", b)
+        b = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", b)
+        b = re.sub(r"[*_`]", "", b)
+        b = re.sub(r"\s+", " ", b).strip()
+        if len(b) <= limit:
+            return b
+        cut = b[:limit - 1].rsplit(" ", 1)[0].rstrip(",;:.")
+        return cut + "…"
+    return ""
+
+
 def read_post(path):
     """A post file: JSON front matter (what the editor writes), then Markdown."""
     text = path.read_text(encoding="utf-8").lstrip("﻿")
@@ -289,13 +306,19 @@ def read_post(path):
     else:
         raise ValueError(f"{path.name}: no front matter")
     data["body"] = body.strip()
-    data["slug"] = path.stem
-    data["date"] = str(data.get("date", ""))[:10]
-    for field in ("title", "description", "date", "category", "image"):
-        if not data.get(field):
-            raise ValueError(f"{path.name}: missing '{field}'")
-    data.setdefault("image_alt", data["title"])
-    data.setdefault("excerpt", data["description"])
+    # New posts are saved as "YYYY-MM-DD-title.md": the date is the day the post
+    # was created in the editor, and the web address is the title part only.
+    named = re.match(r"(\d{4}-\d{2}-\d{2})-(.+)$", path.stem)
+    data["slug"] = named.group(2) if named else path.stem
+    data["date"] = str(data.get("date") or (named.group(1) if named else ""))[:10]
+    if not data.get("title") or not data["date"]:
+        raise ValueError(f"{path.name}: needs a title and a date")
+    # Everything else fills itself in when the editor leaves it out.
+    data["category"] = data.get("category") or "Career Development"
+    data["image"] = data.get("image") or "/images/hero-blog.webp"
+    data["image_alt"] = data.get("image_alt") or data["title"]
+    data["description"] = data.get("description") or summary(data["body"], 155)
+    data["excerpt"] = data.get("excerpt") or summary(data["body"], 220)
     return data
 
 
@@ -363,7 +386,9 @@ def post_page_body(p, others):
 
 def blog_index_body(posts):
     tpl = SRC / "templates"
-    featured = next((p for p in posts if str(p.get("featured")).lower() == "true"), posts[0] if posts else None)
+    # A post marked featured leads only until a newer post is published.
+    marked = next((p for p in posts if str(p.get("featured")).lower() == "true"), None)
+    featured = marked if marked and posts and marked["date"] >= posts[0]["date"] else (posts[0] if posts else None)
     rest = [p for p in posts if p is not featured]
     grid = "\n".join(post_card(p) for p in rest)
     feat = post_card(featured, featured=True) if featured else "<p>New articles are on the way.</p>"
@@ -409,7 +434,8 @@ for f in sorted((SRC / "pages").glob("*.html")):
     if not meta.get("noindex"):
         sitemap.append((DOMAIN + meta["path"], meta.get("date", BUILT)))
 
-posts = sorted((read_post(f) for f in CONTENT.glob("*.md")), key=lambda p: p["date"], reverse=True)
+# Newest first; on the same day, the most recently created file first.
+posts = sorted((read_post(f) for f in CONTENT.glob("*.md")), key=lambda p: (p["date"], p["slug"]), reverse=True)
 posts = [p for p in posts if str(p.get("draft", "")).lower() != "true"]
 for p in posts:
     meta = {"title": f"{p['title']} | K3 Professional Services", "description": p["description"],

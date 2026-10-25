@@ -6,15 +6,44 @@
   <meta name="robots" content="noindex, nofollow">
   <title>K3 Blog Editor</title>
   <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* K3 colors and type on top of the editor's own styles. The editor marks
+       its parts with stable labels in its class names (e.g. "-AppHeader"),
+       which is what these selectors match. */
+    :root { --k3-green: #1b4b3d; --k3-green-deep: #12352b; --k3-gold: #d4af35; --k3-cream: #fafaf7; }
+    body, button, input, select, textarea { font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif !important; }
+    body { background: var(--k3-cream) !important; }
+
+    /* Top bar: K3 green with light text */
+    header[class*="-AppHeader"] { background: var(--k3-green) !important; box-shadow: none !important; }
+    header[class*="-AppHeader"] img { max-height: 44px !important; }
+    [class*="-AppHeaderButton"], header[class*="-AppHeader"] a { color: #e8efe9 !important; }
+    [class*="-AppHeaderButton"] svg, header[class*="-AppHeader"] a svg { color: #c9d8cf !important; }
+    [class*="-AppHeaderButton"]:hover, [class*="-AppHeaderButton"].header-link-active,
+    header[class*="-AppHeader"] a:hover, header[class*="-AppHeader"] a.header-link-active { color: var(--k3-gold) !important; }
+    [class*="-AppHeaderQuickNewButton"] { background: var(--k3-gold) !important; color: var(--k3-green-deep) !important; font-weight: 600 !important; }
+    [class*="-AvatarDropdownButton"] { background: transparent !important; }
+
+    /* Main buttons: "+ Blog Post" in gold, Publish in K3 green */
+    [class*="-CollectionTopNewButton"] { background: var(--k3-gold) !important; color: var(--k3-green-deep) !important; font-weight: 600 !important; }
+    [class*="-PublishButton"], [class*="-PublishedToolbarButton"] { background: var(--k3-green) !important; color: #fff !important; }
+    [class*="-PublishButton"]:hover { background: var(--k3-green-deep) !important; }
+
+    /* Left menu and headings */
+    [class*="-SidebarNavLink"] { border-radius: 8px !important; }
+    [class*="-SidebarNavLink"].sidebarNavLinkActive, [class*="-sidebarNavLinkActive"] { color: var(--k3-green) !important; border-left-color: var(--k3-gold) !important; background: #eef4f0 !important; }
+    h1, h2 { font-family: "Playfair Display", Georgia, serif !important; color: var(--k3-green-deep); }
+
+    /* Field labels a little larger and friendlier */
+    label[for] { font-size: 13px !important; letter-spacing: .02em; }
+  </style>
 </head>
 <body>
   <!-- Decap CMS: the blog editor. Posts are saved as files in the GitHub
        repository, and Netlify rebuilds the site each time one is published. -->
   <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
-  <script>
-    // Show the preview pane in the site's own fonts and colors.
-    CMS.registerPreviewStyle("/css/style.css");
-    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
-  </script>
 </body>
 </html>
