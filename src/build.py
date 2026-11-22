@@ -34,7 +34,7 @@ SOCIAL = [
 ]
 
 NAV = [("/", "Home"), ("/about", "About"), ("{{RESUMAIRE}}", "Resumaire"),
-       ("/certifications", "Certifications"), ("/remote-careers", "Remote Careers"),
+       ("/certifications", "Certifications"), ("/remote-careers", "Job Hub"),
        ("/blog", "Blog"), ("/contact", "Contact")]
 
 SHARE_IMAGE = DOMAIN + "/images/share.png"
@@ -82,7 +82,7 @@ def footer():
           <li><a href="/resume-writing">Resume Writing</a></li>
           <li><a href="/interview-coaching">Interview Coaching</a></li>
           <li><a href="/certifications">Certifications &amp; Resources</a></li>
-          <li><a href="/remote-careers">Remote Careers</a></li>
+          <li><a href="/remote-careers">Job Hub</a></li>
           <li><a href="{{{{RESUMAIRE}}}}">Resumaire</a></li>
           <li><a href="/concierge">Concierge</a></li>
           <li><a href="/blog">Blog</a></li>
