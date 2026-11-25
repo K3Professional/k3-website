@@ -103,9 +103,8 @@ def footer():
         </ul>
       </div>
       <div>
-        <h3>Ready to Book?</h3>
-        <p>Start with a free 15-minute discovery call.</p>
-        <a class="btn btn-gold" href="{{{{BOOK}}}}">Book a Free Call</a>
+        <h3>Ready to Talk?</h3>
+        <p>Start with a <a href="{{{{BOOK}}}}" style="color:var(--gold)">free 15-minute discovery call</a>, or try a free tool first.</p>
       </div>
     </div>
     <div class="bottom">
