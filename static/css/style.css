@@ -194,3 +194,8 @@ details.faq p{padding:0 24px 20px;margin:0}
 .site-footer ul.social li{margin:0}
 .site-footer ul.social a{display:inline-block;padding:6px 14px;border:1px solid rgba(212,175,53,.55);border-radius:999px;font-size:.85rem;font-weight:600}
 .site-footer ul.social a:hover{background:var(--gold);color:var(--green-deep);border-color:var(--gold)}
+
+/* "Secure checkout through Resumaire" line under payment buttons */
+.checkout-note{margin-top:12px}
+.center .checkout-note,.checkout-note.center{text-align:center}
+.dark .checkout-note a{color:var(--gold)}

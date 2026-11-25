@@ -21,6 +21,9 @@ TOKENS = {
     "{{RESUMAIRE}}": "https://www.resumaire.com",
     "{{LOGO}}": "/images/k3-logo-256.webp",
     "{{LIVE}}": DOMAIN,
+    # Under every button that sends someone to Resumaire to pay.
+    "{{CHECKOUT}}": ('<p class="small checkout-note">Secure checkout through Resumaire, our client platform (owned by K3). '
+                     '<a href="https://resumaire.com/refunds">Refund &amp; cancellation policy</a></p>'),
 }
 
 # Add the business's real social profile URLs here (LinkedIn company page first).
