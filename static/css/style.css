@@ -206,3 +206,4 @@ details.faq p{padding:0 24px 20px;margin:0}
 .testimonial figcaption{display:flex;flex-direction:column;gap:2px;font-size:.95rem}
 .testimonial figcaption span{color:var(--muted)}
 .credentials ul{margin:0}
+section[id]{scroll-margin-top:72px}

@@ -25,6 +25,7 @@ TOKENS = {
     "{{CHECKOUT}}": ('<p class="small checkout-note">Secure checkout through Resumaire, our client platform (owned by K3). '
                      '<a href="https://resumaire.com/refunds">Refund &amp; cancellation policy</a></p>'),
 }
+TOKENS["{{CHECKOUT_CENTER}}"] = TOKENS["{{CHECKOUT}}"].replace('class="small checkout-note"', 'class="small checkout-note center"')
 
 # Add the business's real social profile URLs here (LinkedIn company page first).
 # They appear in the footer and in the business markup Google reads.
@@ -36,9 +37,11 @@ SOCIAL = [
     ("X", "https://x.com/K3Professional"),
 ]
 
-NAV = [("/", "Home"), ("/about", "About"), ("{{RESUMAIRE}}", "Resumaire"),
-       ("/certifications", "Certifications"), ("/remote-careers", "Job Hub"),
-       ("/blog", "Blog"), ("/contact", "Contact")]
+# The logo is the link home. Resumaire is reached from every pricing button
+# and the footer, so the header keeps to K3's own pages.
+NAV = [("/#services-pricing", "Services"), ("/concierge", "Concierge"),
+       ("/remote-careers", "Job Hub"), ("/certifications", "Certifications"),
+       ("/blog", "Blog"), ("/about", "About"), ("/contact", "Contact")]
 
 SHARE_IMAGE = DOMAIN + "/images/share.png"
 
@@ -46,7 +49,7 @@ SHARE_IMAGE = DOMAIN + "/images/share.png"
 def header(path):
     links = []
     for href, label in NAV:
-        active = href != "/" and path.startswith(href) or href == path
+        active = href.startswith("/") and not href.startswith("/#") and (path == href or path.startswith(href + "/"))
         cls = ' class="active"' if active else ""
         links.append(f'<a href="{href}"{cls}>{label}</a>')
     nav = "\n      ".join(links)
@@ -60,6 +63,8 @@ def header(path):
       <a class="btn btn-gold btn-sm" href="{{{{BOOK}}}}">Book a Free Call</a>
     </nav>
   </div>
+  <script>/* close the phone menu after a tap, e.g. on "Services" while already on the homepage */
+  document.querySelectorAll('.nav a').forEach(function(a){{a.addEventListener('click',function(){{document.getElementById('menu').checked=false;}});}});</script>
 </header>'''
 
 
@@ -76,19 +81,22 @@ def footer():
         <p>Delivering professional career development, resume, and coaching services directly to you.</p>{social}
       </div>
       <div>
-        <h3>Quick Links</h3>
+        <h3>Services</h3>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About Us</a></li>
+          <li><a href="/#services-pricing">Services &amp; Pricing</a></li>
           <li><a href="/career-development">Career Development</a></li>
           <li><a href="/career-coaching">Career Coaching</a></li>
           <li><a href="/resume-writing">Resume Writing</a></li>
           <li><a href="/interview-coaching">Interview Coaching</a></li>
-          <li><a href="/certifications">Certifications &amp; Resources</a></li>
-          <li><a href="/remote-careers">Job Hub</a></li>
-          <li><a href="{{{{RESUMAIRE}}}}">Resumaire</a></li>
           <li><a href="/concierge">Concierge</a></li>
+        </ul>
+        <h3 style="margin-top:28px">Company</h3>
+        <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/remote-careers">Job Hub</a></li>
+          <li><a href="/certifications">Certifications &amp; Resources</a></li>
           <li><a href="/blog">Blog</a></li>
+          <li><a href="{{{{RESUMAIRE}}}}">Resumaire</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
       </div>
@@ -96,7 +104,7 @@ def footer():
         <h4>Free Tools</h4>
         <ul>
           <li><a href="{{{{ASSESS}}}}">Free Career Assessment</a></li>
-          <li><a href="{{{{ATS}}}}">Free ATS Check</a></li>
+          <li><a href="{{{{ATS}}}}">Free Resume Score</a></li>
         </ul>
         <h3 style="margin-top:28px">Contact</h3>
         <ul>
@@ -112,7 +120,7 @@ def footer():
     </div>
     <div class="bottom">
       <span>&copy; 2026 K3 Professional Services. All rights reserved.</span>
-      <span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></span>
+      <span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="https://resumaire.com/refunds">Refunds &amp; Cancellations</a></span>
     </div>
   </div>
 </footer>'''
