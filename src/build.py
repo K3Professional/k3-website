@@ -421,6 +421,72 @@ if OUT.exists():
     shutil.rmtree(OUT)
 shutil.copytree(STATIC, OUT)  # css, images, admin editor, redirects, verification file
 
+# ---- testimonials and credentials (edited in /admin) ----
+# Both homepage sections stay out of the page until there is real content:
+# a testimonial only counts once "client gave permission" is ticked.
+esc = htmllib.escape
+
+
+def read_testimonials():
+    folder = SRC.parent / "content" / "testimonials"
+    items = []
+    for f in sorted(folder.glob("*.json")) if folder.exists() else []:
+        try:
+            t = json.loads(f.read_text(encoding="utf-8"))
+        except ValueError:
+            print("skipped unreadable testimonial", f.name)
+            continue
+        if t.get("permission") is True and str(t.get("quote", "")).strip() and str(t.get("name", "")).strip():
+            items.append(t)
+    return items
+
+
+def testimonials_section(items):
+    if not items:
+        return ""
+    cards = "\n".join(
+        f'      <figure class="card testimonial"><blockquote>“{esc(t["quote"].strip())}”</blockquote>'
+        f'<figcaption><strong>{esc(t["name"].strip())}</strong>'
+        + (f'<span>{esc(t["role"].strip())}</span>' if str(t.get("role", "")).strip() else "")
+        + (f'<span class="tag">{esc(t["service"])}</span>' if str(t.get("service", "")).strip() else "")
+        + "</figcaption></figure>"
+        for t in items)
+    return f"""<section class="tint" id="testimonials">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Client Stories</span>
+      <h2>In Our Clients’ Words</h2>
+    </div>
+    <div class="grid g3">
+{cards}
+    </div>
+  </div>
+</section>
+"""
+
+
+def credentials_block():
+    f = SRC.parent / "content" / "credentials.json"
+    try:
+        items = json.loads(f.read_text(encoding="utf-8")).get("items") or [] if f.exists() else []
+    except ValueError:
+        items = []
+    items = [c for c in items if str(c.get("title", "")).strip()]
+    if not items:
+        return ""
+    lis = "".join(
+        f'<li><strong>{esc(c["title"].strip())}</strong>'
+        + (f' <span class="small">{esc(c["detail"].strip())}</span>' if str(c.get("detail", "")).strip() else "")
+        + "</li>" for c in items)
+    return f"""    <div class="card credentials" style="margin-top:28px">
+      <h3 class="eyebrow">Credentials &amp; Experience</h3>
+      <ul class="ticks">{lis}</ul>
+    </div>"""
+
+
+TOKENS["{{TESTIMONIALS}}"] = testimonials_section(read_testimonials())
+TOKENS["{{CREDENTIALS}}"] = credentials_block()
+
 sitemap = []
 for f in sorted((SRC / "pages").glob("*.html")):
     meta, body = read_meta(f.read_text())

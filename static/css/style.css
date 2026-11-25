@@ -199,3 +199,10 @@ details.faq p{padding:0 24px 20px;margin:0}
 .checkout-note{margin-top:12px}
 .center .checkout-note,.checkout-note.center{text-align:center}
 .dark .checkout-note a{color:var(--gold)}
+
+/* Testimonials (hidden until one has permission ticked in /admin) */
+.testimonial{margin:0;display:flex;flex-direction:column;gap:16px}
+.testimonial blockquote{margin:0;font-size:1.05rem;line-height:1.6}
+.testimonial figcaption{display:flex;flex-direction:column;gap:2px;font-size:.95rem}
+.testimonial figcaption span{color:var(--muted)}
+.credentials ul{margin:0}

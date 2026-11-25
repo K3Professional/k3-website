@@ -11,11 +11,11 @@ backend:
   repo: K3Professional/k3-website
   branch: main
   commit_messages:
-    create: "Blog: add “{{slug}}”"
-    update: "Blog: update “{{slug}}”"
-    delete: "Blog: delete “{{slug}}”"
-    uploadMedia: "Blog: upload image {{path}}"
-    deleteMedia: "Blog: delete image {{path}}"
+    create: "{{collection}}: add “{{slug}}”"
+    update: "{{collection}}: update “{{slug}}”"
+    delete: "{{collection}}: delete “{{slug}}”"
+    uploadMedia: "Upload image {{path}}"
+    deleteMedia: "Delete image {{path}}"
 
 site_url: https://k3professionalservices.com
 display_url: https://k3professionalservices.com
@@ -65,3 +65,62 @@ collections:
         buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"]
         editor_components: ["image"]
         hint: "Your first paragraph becomes the summary people see in Google and on the blog page, so make it a good one."
+
+  # Homepage testimonials. The section stays hidden until at least one entry
+  # has "Client gave permission" ticked. Only add words a real client sent you.
+  - name: testimonials
+    label: Testimonials
+    label_singular: Testimonial
+    description: "Add a real client's words, exactly as they sent them. It appears on the homepage once “Client gave permission” is ticked."
+    folder: content/testimonials
+    create: true
+    extension: json
+    format: json
+    slug: "{{year}}-{{month}}-{{day}}-{{fields.name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    editor:
+      preview: false
+    fields:
+      - label: Client's name
+        name: name
+        widget: string
+        hint: "As they agreed to be named, for example “Tanya R.” or “Marcus, Atlanta”."
+      - label: Role
+        name: role
+        widget: string
+        required: false
+        hint: "For example “Operations Manager” or “Career changer”."
+      - label: What they said
+        name: quote
+        widget: text
+        hint: "Their words, unedited apart from spelling."
+      - label: Service
+        name: service
+        widget: select
+        required: false
+        options: ["Strategy Call", "Resume Writing", "Cover Letter", "Mock Interview", "Interview Cheat Sheet", "Portfolio Page", "Researched Openings", "Concierge"]
+      - label: Client gave permission
+        name: permission
+        widget: boolean
+        default: false
+        hint: "Tick only when the client has agreed in writing to be quoted on the website."
+
+  # Homepage credentials. Hidden while the list is empty.
+  - name: settings
+    label: Homepage
+    editor:
+      preview: false
+    files:
+      - name: credentials
+        label: Credentials & Experience
+        file: content/credentials.json
+        fields:
+          - label: Credentials
+            name: items
+            widget: list
+            required: false
+            hint: "Shown on the homepage under the team. Leave empty to hide the section. Only list what is real and verifiable."
+            fields:
+              - { label: Credential, name: title, widget: string, hint: "For example “15+ years hiring and leading teams”" }
+              - { label: Detail, name: detail, widget: string, required: false }
