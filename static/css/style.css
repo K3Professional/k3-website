@@ -207,3 +207,29 @@ details.faq p{padding:0 24px 20px;margin:0}
 .testimonial figcaption span{color:var(--muted)}
 .credentials ul{margin:0}
 section[id]{scroll-margin-top:72px}
+
+/* 25 Days of Christmas calendar */
+.xcal{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:700px){.xcal{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.xcal{grid-template-columns:repeat(3,1fr)}}
+.xday{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 10px rgba(20,57,46,.05)}
+.xday-front{display:none}
+.xday-body{padding:0 0 26px}
+.xday-body img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;margin-bottom:20px}
+.xday-body>*:not(img){margin-left:26px;margin-right:26px}
+.xday-body h3{margin-top:0}
+.xday-cta{font-weight:600;color:var(--ink)}
+.xday.today{border:2px solid var(--gold);box-shadow:0 8px 24px rgba(212,175,53,.25)}
+.xday.locked .xday-body{display:none}
+.xday{scroll-margin-top:84px}
+.xday .tag{display:block;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--gold-dark);margin:0 0 8px}
+.xsoon-h{margin:48px 0 20px;font-size:1.6rem}
+.xsoon{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(min-width:700px){.xsoon{grid-template-columns:repeat(8,1fr);gap:14px}}
+.xday.locked .xday-front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;aspect-ratio:1;
+  background:radial-gradient(circle at 70% 0%,#24604e,#1b4b3d 55%,#12352b);color:#fff}
+.xday-num{font-family:"Playfair Display",Georgia,serif;font-size:1.9rem;font-weight:700;color:var(--gold);line-height:1}
+.xday-lock{font-size:.68rem;letter-spacing:.1em;white-space:nowrap;text-transform:uppercase;opacity:.8}
+.xcal-note{margin-bottom:22px}
+.announce{display:block;text-align:center;padding:11px 16px;background:var(--gold);color:var(--green-deep);font-size:.92rem;text-decoration:none}
+.announce:hover{background:var(--gold-dark)}
